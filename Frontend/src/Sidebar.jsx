@@ -8,7 +8,7 @@ function Sidebar() {
 
     const getAllThreads = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/thread");
+            const response = await fetch("https://sigmagpt-backend-xvgs.onrender.com/api/thread");
             const res = await response.json();
             const filteredData = res.map(thread => ({threadId: thread.threadId, title: thread.title}));
             //console.log(filteredData);
@@ -39,7 +39,7 @@ const changeThread = async (newThreadId) => {
 
     try {
         const response = await fetch(
-            `http://localhost:8080/api/thread/${newThreadId}`
+            `https://sigmagpt-backend-xvgs.onrender.com/api/thread/${newThreadId}`
         );
 
         if (!response.ok) {
@@ -69,7 +69,7 @@ const changeThread = async (newThreadId) => {
 const deleteThread = async (threadId) => {
     try {
         const response = await fetch(
-            `http://localhost:8080/api/thread/${threadId}`,
+            `https://sigmagpt-backend-xvgs.onrender.com/api/thread/${threadId}`,
             { method: "DELETE" }
         );
 
