@@ -9,7 +9,12 @@ function Sidebar() {
 
     const getAllThreads = async () => {
         try {
-            const response = await fetch("https://sigmagpt-backend-xvgs.onrender.com/api/thread");
+           const response = await fetch(
+    "https://sigmagpt-backend-xvgs.onrender.com/api/thread",
+    {
+        credentials: "include"
+    }
+);
             const res = await response.json();
             const filteredData = res.map(thread => ({threadId: thread.threadId, title: thread.title}));
             //console.log(filteredData);
@@ -39,9 +44,12 @@ const changeThread = async (newThreadId) => {
     setReply(null);
 
     try {
-        const response = await fetch(
-            `https://sigmagpt-backend-xvgs.onrender.com/api/thread/${newThreadId}`
-        );
+     const response = await fetch(
+    `https://sigmagpt-backend-xvgs.onrender.com/api/thread/${newThreadId}`,
+    {
+        credentials: "include"
+    }
+);
 
         if (!response.ok) {
             throw new Error(`Failed to load thread: ${response.status}`);
@@ -69,10 +77,13 @@ const changeThread = async (newThreadId) => {
 
 const deleteThread = async (threadId) => {
     try {
-        const response = await fetch(
-            `https://sigmagpt-backend-xvgs.onrender.com/api/thread/${threadId}`,
-            { method: "DELETE" }
-        );
+           const response = await fetch(
+    `https://sigmagpt-backend-xvgs.onrender.com/api/thread/${threadId}`,
+    {
+        method: "DELETE",
+        credentials: "include"
+    }
+);
 
         const result = await response.json();
         console.log("Delete status:", response.status);

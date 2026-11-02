@@ -4,7 +4,7 @@ import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect } from "react";
 import {ScaleLoader} from "react-spinners";
 
-function ChatWindow() {
+function ChatWindow({ onLogout }) {
     const {prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat} = useContext(MyContext);
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +16,7 @@ function ChatWindow() {
         console.log("message ", prompt, " threadId ", currThreadId);
         const options = {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -58,6 +59,11 @@ function ChatWindow() {
         setIsOpen(!isOpen);
     }
 
+    const handleLogoutClick = () => {
+    setIsOpen(false);
+    onLogout();
+};
+
     return (
         <div className="chatWindow">
             <div className="navbar">
@@ -66,14 +72,29 @@ function ChatWindow() {
                     <span className="userIcon"><i className="fa-solid fa-user"></i></span>
                 </div>
             </div>
-            {
-                isOpen && 
-                <div className="dropDown">
-                    <div className="dropDownItem"><i class="fa-solid fa-gear"></i> Settings</div>
-                    <div className="dropDownItem"><i class="fa-solid fa-cloud-arrow-up"></i> Upgrade plan</div>
-                    <div className="dropDownItem"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
-                </div>
-            }
+            
+              {
+    isOpen &&
+    <div className="dropDown">
+        <div className="dropDownItem">
+            <i className="fa-solid fa-gear"></i> Settings
+        </div>
+
+        <div className="dropDownItem">
+            <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
+        </div>
+
+        <div
+            className="dropDownItem"
+            onClick={handleLogoutClick}
+            style={{ cursor: "pointer" }}
+        >
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>
+            Log out
+        </div>
+    </div>
+}  
+
             <Chat></Chat>
 
             <ScaleLoader color="#fff" loading={loading}>

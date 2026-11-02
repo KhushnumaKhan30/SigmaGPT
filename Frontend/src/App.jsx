@@ -61,12 +61,25 @@ function App() {
     return <Auth onLogin={setUser} />;
   }
 
+  const handleLogout = async () => {
+  try {
+    await fetch(`${AUTH_API}/logout`, {
+      method: "POST",
+      credentials: "include"
+    });
+
+    setUser(null);
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+};
+
   // Show chatbot after successful login
   return (
     <div className="app">
       <MyContext.Provider value={providerValues}>
         <Sidebar />
-        <ChatWindow />
+        <ChatWindow onLogout={handleLogout} />
       </MyContext.Provider>
     </div>
   );
