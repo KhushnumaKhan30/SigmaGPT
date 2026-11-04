@@ -22,7 +22,7 @@
     margin: 1rem
 }
 
-userIconDiv{
+.userIconDiv{
    margin : 1rem  2rem; 
 }
 .userIcon {
@@ -126,3 +126,70 @@ userIconDiv{
     background-color: rgba(180, 180, 180, 0.1);
     border-radius: 6px;
 } 
+
+/* Mobile layout */
+@media screen and (max-width: 768px) {
+    .chatWindow {
+        width: 100%;
+        min-width: 0;
+        height: 100vh;
+        height: 100dvh;
+    }
+
+    .navbar {
+        padding: 8px;
+    }
+
+    .navbar span {
+        margin: 0.5rem;
+    }
+
+    .userIconDiv {
+        margin: 0.5rem;
+    }
+
+    .chatInput {
+        padding: 8px;
+    }
+
+    .inputBox {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .inputBox input {
+        padding: 16px 50px 16px 15px;
+        font-size: 16px;
+    }
+
+    .dropDown {
+        right: 12px;
+        top: 55px;
+    }
+
+    .info {
+        font-size: 11px;
+    }
+}
+
+
+
+/* Hide hamburger menu on desktop */
+.menuButton {
+    display: none;
+}
+
+/* Show hamburger menu on mobile */
+@media screen and (max-width: 768px) {
+    .menuButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 8px;
+    }
+}

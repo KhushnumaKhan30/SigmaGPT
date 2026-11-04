@@ -24,3 +24,85 @@ body {
     background-color: #212121;
     overflow: hidden;
 }
+
+
+
+/* Mobile layout */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .chatWindow {
+        width: 100%;
+        min-width: 0;
+        height: 100vh;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    body {
+        background-color: red !important;
+    }
+
+    .sidebar {
+        display: none !important;
+    }
+}
+
+
+
+/* Mobile sidebar menu */
+.sidebarBackdrop {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .sidebar.sidebar-open {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 260px;
+        min-width: 260px;
+        height: 100vh;
+        z-index: 1001;
+    }
+
+    .sidebarBackdrop.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 1000;
+    }
+
+    .chatWindow {
+        width: 100%;
+        min-width: 0;
+        height: 100vh;
+        height: 100dvh;
+    }
+
+    .menuButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        padding: 8px;
+    }
+}
+
+/* Hide hamburger on desktop */
+.menuButton {
+    display: none;
+}

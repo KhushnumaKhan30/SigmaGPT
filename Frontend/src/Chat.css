@@ -99,3 +99,47 @@
     background-color: #777;
 }
 
+
+/* Mobile responsive design */
+@media screen and (max-width: 768px) {
+
+    .chats {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px;
+    }
+
+    .userDiv {
+        margin: 12px 0 18px;
+    }
+
+    .userMsg {
+        max-width: 90%;
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+
+    .gptDiv {
+        margin: 12px 0 20px;
+    }
+
+    .gptMsg {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .gptMsg code {
+        font-size: 12px;
+    }
+
+    .gptMsg pre {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    .hljs {
+        padding: 12px;
+        font-size: 12px;
+    }
+}
+

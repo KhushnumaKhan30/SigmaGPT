@@ -12,6 +12,7 @@ const AUTH_API = "https://sigmagpt-backend-xvgs.onrender.com/api/auth";
 function App() {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Controls which public page is displayed
   const [authView, setAuthView] = useState(null);
@@ -107,14 +108,27 @@ function App() {
   }
 
   // Logged-in chatbot
-  return (
+ return (
     <div className={`app ${theme}-theme`}>
-      <MyContext.Provider value={providerValues}>
-        <Sidebar />
-        <ChatWindow onLogout={handleLogout} />
-      </MyContext.Provider>
+
+        <div
+            className={`sidebarBackdrop ${isSidebarOpen ? "show" : ""}`}
+            onClick={() => setIsSidebarOpen(false)}
+        />
+
+        <MyContext.Provider value={providerValues}>
+            <Sidebar
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+            />
+
+            <ChatWindow
+                onLogout={handleLogout}
+                onMenuClick={() => setIsSidebarOpen(true)}
+            />
+        </MyContext.Provider>
     </div>
-  );
+);
 }
 
 export default App;   
