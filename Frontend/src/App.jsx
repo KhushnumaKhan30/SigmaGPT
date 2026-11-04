@@ -1,8 +1,8 @@
-
 import './App.css';
 import Sidebar from './Sidebar.jsx';
 import ChatWindow from './ChatWindow.jsx';
 import Auth from './Auth.jsx';
+import Landing from './Landing.jsx';
 import { MyContext } from './MyContext.jsx';
 import { useState, useEffect } from 'react';
 import { v1 as uuidv1 } from "uuid";
@@ -13,6 +13,9 @@ function App() {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
+  // Controls which public page is displayed
+  const [authView, setAuthView] = useState(null);
+
   const [prompt, setPrompt] = useState("");
   const [reply, setReply] = useState(null);
   const [currThreadId, setCurrThreadId] = useState(uuidv1());
@@ -20,7 +23,15 @@ function App() {
   const [newChat, setNewChat] = useState(true);
   const [allThreads, setAllThreads] = useState([]);
 
-  // Check whether the user is already logged in
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "dark";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  // Check existing login session
   useEffect(() => {
     async function checkSession() {
       try {
@@ -48,35 +59,56 @@ function App() {
     currThreadId, setCurrThreadId,
     prevChats, setPrevChats,
     newChat, setNewChat,
-    allThreads, setAllThreads
+    allThreads, setAllThreads,
+    theme, setTheme
   };
 
-  // Show loading while checking login status
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${AUTH_API}/logout`, {
+        method: "POST",
+        credentials: "include"
+      });
+
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+
+      setUser(null);
+      setAuthView(null);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   if (checkingAuth) {
     return <div className="authPage">Loading SigmaGPT...</div>;
   }
 
-  // Show Login / Signup if user is not logged in
+  // Public landing page
+  if (!user && authView === null) {
+    return (
+      <Landing
+        onLogin={() => setAuthView("login")}
+        onSignup={() => setAuthView("signup")}
+      />
+    );
+  }
+
+  // Login / Signup page
   if (!user) {
-    return <Auth onLogin={setUser} />;
+    return (
+      <Auth
+        onLogin={setUser}
+        initialIsSignup={authView === "signup"}
+        onBack={() => setAuthView(null)}
+      />
+    );
   }
 
-  const handleLogout = async () => {
-  try {
-    await fetch(`${AUTH_API}/logout`, {
-      method: "POST",
-      credentials: "include"
-    });
-
-    setUser(null);
-  } catch (error) {
-    console.error("Logout failed:", error);
-  }
-};
-
-  // Show chatbot after successful login
+  // Logged-in chatbot
   return (
-    <div className="app">
+    <div className={`app ${theme}-theme`}>
       <MyContext.Provider value={providerValues}>
         <Sidebar />
         <ChatWindow onLogout={handleLogout} />
@@ -85,4 +117,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;   

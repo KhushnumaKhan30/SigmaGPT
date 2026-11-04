@@ -4,8 +4,8 @@ import "./Auth.css";
 
 const API = "https://sigmagpt-backend-xvgs.onrender.com/api/auth";
 
-function Auth({ onLogin }) {
-  const [isSignup, setIsSignup] = useState(false);
+function Auth({ onLogin, initialIsSignup = false, onBack }) {
+  const [isSignup, setIsSignup] = useState(initialIsSignup);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -74,6 +74,16 @@ function Auth({ onLogin }) {
   return (
     <main className="authPage">
       <form className="authCard" onSubmit={handleSubmit}>
+
+        {onBack && (
+  <button
+    type="button"
+    className="authBack"
+    onClick={onBack}
+  >
+    ← Back to Home
+  </button>
+)}
 
         <h1>SigmaGPT</h1>
 

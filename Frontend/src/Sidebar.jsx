@@ -143,4 +143,4 @@ const deleteThread = async (threadId) => {
     )
 }
 
-export default Sidebar;
+export default Sidebar;  
