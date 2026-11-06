@@ -1,8 +1,10 @@
+
 import "./ChatWindow.css";
 import Chat from "./Chat.jsx";
 import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect } from "react";
 import { ScaleLoader } from "react-spinners";
+import Settings from "./Settings.jsx";
 
 function ChatWindow({ onLogout, onMenuClick }) {
   const {
@@ -14,14 +16,19 @@ function ChatWindow({ onLogout, onMenuClick }) {
     setPrevChats,
     setNewChat,
   } = useContext(MyContext);
+
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const getReply = async () => {
+    if (!prompt.trim() || loading) return;
+
     setLoading(true);
     setNewChat(false);
 
     console.log("message ", prompt, " threadId ", currThreadId);
+
     const options = {
       method: "POST",
       credentials: "include",
@@ -37,18 +44,20 @@ function ChatWindow({ onLogout, onMenuClick }) {
     try {
       const response = await fetch(
         "https://sigmagpt-backend-xvgs.onrender.com/api/chat",
-        options,
+        options
       );
+
       const res = await response.json();
       console.log(res);
       setReply(res.reply);
     } catch (err) {
       console.log(err);
     }
+
     setLoading(false);
   };
 
-  //Append new chat to prevChats
+  // Append new chat to prevChats
   useEffect(() => {
     if (prompt && reply) {
       setPrevChats((prevChats) => [
@@ -76,15 +85,22 @@ function ChatWindow({ onLogout, onMenuClick }) {
     onLogout();
   };
 
+  const handleSettingsClick = () => {
+    setIsOpen(false);
+    setShowSettings(true);
+  };
+
   return (
     <div className="chatWindow">
       <div className="navbar">
         <button className="menuButton" onClick={onMenuClick}>
           <i className="fa-solid fa-bars"></i>
         </button>
+
         <span>
           SigmaGPT <i className="fa-solid fa-chevron-down"></i>
         </span>
+
         <div className="userIconDiv" onClick={handleProfileClick}>
           <span className="userIcon">
             <i className="fa-solid fa-user"></i>
@@ -94,7 +110,10 @@ function ChatWindow({ onLogout, onMenuClick }) {
 
       {isOpen && (
         <div className="dropDown">
-          <div className="dropDownItem">
+          <div
+            className="dropDownItem"
+            onClick={handleSettingsClick}
+          >
             <i className="fa-solid fa-gear"></i> Settings
           </div>
 
@@ -113,9 +132,9 @@ function ChatWindow({ onLogout, onMenuClick }) {
         </div>
       )}
 
-      <Chat></Chat>
+      <Chat />
 
-      <ScaleLoader color="#fff" loading={loading}></ScaleLoader>
+      <ScaleLoader color="#fff" loading={loading} />
 
       <div className="chatInput">
         <div className="inputBox">
@@ -123,19 +142,29 @@ function ChatWindow({ onLogout, onMenuClick }) {
             placeholder="Ask anything"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            onKeyDown={(e) => (e.key === "Enter" ? getReply() : "")}
-          ></input>
+            onKeyDown={(e) => {
+              if (e.key === "Enter") getReply();
+            }}
+          />
+
           <div id="submit" onClick={getReply}>
             <i className="fa-solid fa-paper-plane"></i>
           </div>
         </div>
+
         <p className="info">
           SigmaGPT can make mistakes. Check important info. See Cookie
           Preferences.
         </p>
       </div>
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <Settings onClose={() => setShowSettings(false)} />
+      )}
     </div>
   );
 }
 
 export default ChatWindow;
+

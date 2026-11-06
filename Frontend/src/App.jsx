@@ -61,7 +61,8 @@ function App() {
     prevChats, setPrevChats,
     newChat, setNewChat,
     allThreads, setAllThreads,
-    theme, setTheme
+    theme, setTheme,
+    user, setUser,
   };
 
   const handleLogout = async () => {

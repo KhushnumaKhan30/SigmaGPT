@@ -1,0 +1,182 @@
+
+/* Settings Overlay */
+.settingsOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 15px;
+}
+
+/* Settings Modal */
+.settingsModal {
+    width: 100%;
+    max-width: 480px;
+    background: #303038;
+    border: 1px solid #50505B;
+    border-radius: 16px;
+    padding: 28px;
+    color: #E5E5EB;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+}
+
+/* Header */
+.settingsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.settingsHeader h2 {
+    color: #E5E5EB;
+    font-size: 23px;
+    margin: 0;
+}
+
+/* Close Button */
+.settingsHeader button {
+    background: #3A3A43;
+    color: #D5D5DE;
+    border: 1px solid #50505B;
+    border-radius: 8px;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-size: 17px;
+    transition: 0.2s ease;
+}
+
+.settingsHeader button:hover {
+    background: #484852;
+    border-color: #686875;
+    color: #FFFFFF;
+}
+
+/* Section Headings */
+.settingsModal h3 {
+    color: #C5C5D0;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 24px 0 12px;
+}
+
+/* Setting Items */
+.settingItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: #383840;
+    border: 1px solid #494952;
+    border-radius: 10px;
+    padding: 13px 15px;
+    margin-bottom: 10px;
+    transition: 0.2s ease;
+}
+
+.settingItem:hover {
+    border-color: #686875;
+    background: #404049;
+}
+
+.settingItem label {
+    color: #D0D0D9;
+    font-size: 14px;
+}
+
+.settingItem span {
+    color: #E5E5EB;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+/* Theme Dropdown */
+.settingItem select {
+    background: #3A3A43;
+    color: #E5E5EB;
+    border: 1px solid #50505B;
+    border-radius: 7px;
+    padding: 7px 12px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.settingItem select:hover {
+    background: #484852;
+}
+
+.settingItem select:focus {
+    border-color: #858591;
+}
+
+.settingItem select option {
+    background: #303038;
+    color: #E5E5EB;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 500px) {
+    .settingsModal {
+        padding: 20px;
+    }
+
+    .settingItem {
+        padding: 11px;
+    }
+
+    .settingsHeader h2 {
+        font-size: 21px;
+    }
+}
+
+
+
+
+/* Green Close Button */
+.settingsHeader button {
+    background: #00A884;
+    color: #FFFFFF;
+    border: 1px solid #00A884;
+    border-radius: 8px;
+    transition: 0.2s ease;
+}
+
+.settingsHeader button:hover {
+    background: #009B78;
+    border-color: #009B78;
+}
+
+/* Green Theme Dropdown */
+.settingItem select {
+    background: #00A884;
+    color: #FFFFFF;
+    border: 1px solid #00A884;
+    border-radius: 7px;
+    padding: 7px 12px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.settingItem select:hover {
+    background: #009B78;
+}
+
+.settingItem select:focus {
+    border-color: #72DDBB;
+}
+
+.settingItem select option {
+    background: #303038;
+    color: #FFFFFF;
+} 
+
+
+
+
+
