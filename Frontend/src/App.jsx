@@ -7,7 +7,7 @@ import { MyContext } from './MyContext.jsx';
 import { useState, useEffect } from 'react';
 import { v1 as uuidv1 } from "uuid";
 
-const AUTH_API = "https://sigmagpt-backend-xvgs.onrender.com/api/auth";
+import { API_ENDPOINTS, defaultHeaders } from './apiConfig.js';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -36,99 +36,101 @@ function App() {
   useEffect(() => {
     async function checkSession() {
       try {
-        const response = await fetch(`${AUTH_API}/me`, {
-          credentials: "include"
-        });
+        const response = await fetch(`${API_ENDPOINTS.AUTH}/me`, {
+            credentials: "include",
+            headers: defaultHeaders
+          });
 
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
-        }
-      } catch (error) {
-        console.error("Session check failed:", error);
-      } finally {
-        setCheckingAuth(false);
+          if(response.ok) {
+            const data = await response.json();
+        setUser(data.user);
       }
+      } catch (error) {
+      console.error("Session check failed:", error);
+    } finally {
+      setCheckingAuth(false);
     }
+  }
 
     checkSession();
-  }, []);
+}, []);
 
-  const providerValues = {
-    prompt, setPrompt,
-    reply, setReply,
-    currThreadId, setCurrThreadId,
-    prevChats, setPrevChats,
-    newChat, setNewChat,
-    allThreads, setAllThreads,
-    theme, setTheme,
-    user, setUser,
-  };
+const providerValues = {
+  prompt, setPrompt,
+  reply, setReply,
+  currThreadId, setCurrThreadId,
+  prevChats, setPrevChats,
+  newChat, setNewChat,
+  allThreads, setAllThreads,
+  theme, setTheme,
+  user, setUser,
+};
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch(`${AUTH_API}/logout`, {
+const handleLogout = async () => {
+  try {
+      const response = await fetch(`${API_ENDPOINTS.AUTH}/logout`, {
         method: "POST",
-        credentials: "include"
+        credentials: "include",
+        headers: defaultHeaders
       });
 
-      if (!response.ok) {
+      if(!response.ok) {
         throw new Error("Logout failed");
-      }
+  }
 
       setUser(null);
-      setAuthView(null);
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
+  setAuthView(null);
+} catch (error) {
+  console.error("Logout failed:", error);
+}
   };
 
-  if (checkingAuth) {
-    return <div className="authPage">Loading SigmaGPT...</div>;
-  }
+if (checkingAuth) {
+  return <div className="authPage">Loading SigmaGPT...</div>;
+}
 
-  // Public landing page
-  if (!user && authView === null) {
-    return (
-      <Landing
-        onLogin={() => setAuthView("login")}
-        onSignup={() => setAuthView("signup")}
+// Public landing page
+if (!user && authView === null) {
+  return (
+    <Landing
+      onLogin={() => setAuthView("login")}
+      onSignup={() => setAuthView("signup")}
+    />
+  );
+}
+
+// Login / Signup page
+if (!user) {
+  return (
+    <Auth
+      onLogin={setUser}
+      initialIsSignup={authView === "signup"}
+      onBack={() => setAuthView(null)}
+    />
+  );
+}
+
+// Logged-in chatbot
+return (
+  <div className={`app ${theme}-theme`}>
+
+    <div
+      className={`sidebarBackdrop ${isSidebarOpen ? "show" : ""}`}
+      onClick={() => setIsSidebarOpen(false)}
+    />
+
+    <MyContext.Provider value={providerValues}>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
-    );
-  }
 
-  // Login / Signup page
-  if (!user) {
-    return (
-      <Auth
-        onLogin={setUser}
-        initialIsSignup={authView === "signup"}
-        onBack={() => setAuthView(null)}
+      <ChatWindow
+        onLogout={handleLogout}
+        onMenuClick={() => setIsSidebarOpen(true)}
       />
-    );
-  }
-
-  // Logged-in chatbot
- return (
-    <div className={`app ${theme}-theme`}>
-
-        <div
-            className={`sidebarBackdrop ${isSidebarOpen ? "show" : ""}`}
-            onClick={() => setIsSidebarOpen(false)}
-        />
-
-        <MyContext.Provider value={providerValues}>
-            <Sidebar
-                isOpen={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-            />
-
-            <ChatWindow
-                onLogout={handleLogout}
-                onMenuClick={() => setIsSidebarOpen(true)}
-            />
-        </MyContext.Provider>
-    </div>
+    </MyContext.Provider>
+  </div>
 );
 }
 
