@@ -5,6 +5,7 @@ import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect } from "react";
 import { ScaleLoader } from "react-spinners";
 import Settings from "./Settings.jsx";
+import { API_ENDPOINTS, defaultHeaders } from "./apiConfig.js";
 
 function ChatWindow({ onLogout, onMenuClick }) {
   const {
@@ -32,9 +33,7 @@ function ChatWindow({ onLogout, onMenuClick }) {
     const options = {
       method: "POST",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: defaultHeaders,
       body: JSON.stringify({
         message: prompt,
         threadId: currThreadId,
@@ -43,7 +42,7 @@ function ChatWindow({ onLogout, onMenuClick }) {
 
     try {
       const response = await fetch(
-        "https://sigmagpt-backend-xvgs.onrender.com/api/chat",
+        API_ENDPOINTS.CHAT,
         options
       );
 

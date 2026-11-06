@@ -1,8 +1,7 @@
 
 import { useState } from "react";
 import "./Auth.css";
-
-const API = "https://sigmagpt-backend-xvgs.onrender.com/api/auth";
+import { API_ENDPOINTS, defaultHeaders } from "./apiConfig.js";
 
 function Auth({ onLogin, initialIsSignup = false, onBack }) {
   const [isSignup, setIsSignup] = useState(initialIsSignup);
@@ -33,13 +32,11 @@ function Auth({ onLogin, initialIsSignup = false, onBack }) {
 
     try {
       const response = await fetch(
-        `${API}/${isSignup ? "signup" : "login"}`,
+        `${API_ENDPOINTS.AUTH}/${isSignup ? "signup" : "login"}`,
         {
           method: "POST",
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: defaultHeaders,
           body: JSON.stringify({
             name,
             email,
@@ -76,14 +73,14 @@ function Auth({ onLogin, initialIsSignup = false, onBack }) {
       <form className="authCard" onSubmit={handleSubmit}>
 
         {onBack && (
-  <button
-    type="button"
-    className="authBack"
-    onClick={onBack}
-  >
-    ← Back to Home
-  </button>
-)}
+          <button
+            type="button"
+            className="authBack"
+            onClick={onBack}
+          >
+            ← Back to Home
+          </button>
+        )}
 
         <h1>SigmaGPT</h1>
 
