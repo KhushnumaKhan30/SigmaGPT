@@ -6,3 +6,8 @@ node_modules/
 !.env.example
 dist/
 **/dist/
+
+# Agent & AI skills
+.agents/
+skills-lock.json
+

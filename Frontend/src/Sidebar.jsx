@@ -3,6 +3,7 @@ import { useContext, useEffect } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
 import blacklogo from "./assets/blacklogo.png";
+import { API_ENDPOINTS, defaultHeaders } from "./apiConfig.js";
 
 function Sidebar({ isOpen, onClose }) {
   const {
@@ -19,9 +20,10 @@ function Sidebar({ isOpen, onClose }) {
   const getAllThreads = async () => {
     try {
       const response = await fetch(
-        "https://sigmagpt-backend-xvgs.onrender.com/api/thread",
+        API_ENDPOINTS.THREAD,
         {
           credentials: "include",
+          headers: defaultHeaders
         },
       );
       const res = await response.json();
@@ -55,9 +57,10 @@ function Sidebar({ isOpen, onClose }) {
 
     try {
       const response = await fetch(
-        `https://sigmagpt-backend-xvgs.onrender.com/api/thread/${newThreadId}`,
+        `${API_ENDPOINTS.THREAD}/${newThreadId}`,
         {
           credentials: "include",
+          headers: defaultHeaders
         },
       );
 
@@ -83,10 +86,11 @@ function Sidebar({ isOpen, onClose }) {
   const deleteThread = async (threadId) => {
     try {
       const response = await fetch(
-        `https://sigmagpt-backend-xvgs.onrender.com/api/thread/${threadId}`,
+        `${API_ENDPOINTS.THREAD}/${threadId}`,
         {
           method: "DELETE",
           credentials: "include",
+          headers: defaultHeaders
         },
       );
 
@@ -127,32 +131,32 @@ function Sidebar({ isOpen, onClose }) {
         </span>
       </button>
 
-<ul className="history">
-    {allThreads?.map((thread) => (
-        <li
+      <ul className="history">
+        {allThreads?.map((thread) => (
+          <li
             key={thread.threadId}
             onClick={() => {
-                changeThread(thread.threadId);
-                onClose();
+              changeThread(thread.threadId);
+              onClose();
             }}
             className={
-                thread.threadId === currThreadId
-                    ? "highlighted"
-                    : ""
+              thread.threadId === currThreadId
+                ? "highlighted"
+                : ""
             }
-        >
+          >
             {thread.title}
 
             <i
-                className="fa-solid fa-trash"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    deleteThread(thread.threadId);
-                }}
+              className="fa-solid fa-trash"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteThread(thread.threadId);
+              }}
             ></i>
-        </li>
-    ))}
-</ul>
+          </li>
+        ))}
+      </ul>
 
       <div className="sign">
         <p>By Khushnuma &hearts;</p>
