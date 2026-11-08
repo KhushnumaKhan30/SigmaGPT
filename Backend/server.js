@@ -10,6 +10,18 @@ import rateLimit from "express-rate-limit";
 import chatRoutes from "./routes/chat.js";
 import authRoutes from "./routes/auth.js";
 
+// Fail-safe check: verify critical environment variables before starting
+const requiredEnvVars = ["JWT_SECRET", "MONGODB_URI"];
+const missingEnvVars = requiredEnvVars.filter((name) => !process.env[name]);
+
+if (missingEnvVars.length > 0) {
+  console.error(
+    `[FATAL] Missing required environment variable(s): ${missingEnvVars.join(", ")}`
+  );
+  console.error("The application cannot start securely without these variables. Exiting.");
+  process.exit(1);
+}
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 

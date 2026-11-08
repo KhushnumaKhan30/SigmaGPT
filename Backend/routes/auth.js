@@ -9,10 +9,6 @@ const router = express.Router();
 
 const isProduction = process.env.NODE_ENV === "production";
 
-if (!process.env.JWT_SECRET) {
-  console.warn("WARNING: JWT_SECRET environment variable is not defined!");
-}
-
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,72}$/;
 
@@ -38,7 +34,7 @@ const cookieOptions = {
 function createToken(user) {
   return jwt.sign(
     { userId: user._id.toString() },
-    process.env.JWT_SECRET || "fallback_dev_secret_change_me",
+    process.env.JWT_SECRET,
     { algorithm: "HS256", expiresIn: "7d" }
   );
 }
@@ -154,7 +150,7 @@ function sendUser(res, user) {
 
         const payload = jwt.verify(
           token,
-          process.env.JWT_SECRET || "fallback_dev_secret_change_me",
+          process.env.JWT_SECRET,
           { algorithms: ["HS256"] }
         );
 

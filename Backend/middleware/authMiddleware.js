@@ -19,7 +19,7 @@ const authMiddleware = (req, res, next) => {
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "fallback_dev_secret_change_me",
+      process.env.JWT_SECRET,
       { algorithms: ["HS256"] }
     );
 
